@@ -95,6 +95,7 @@ public class FlowTaskServiceImpl extends FlowServiceFactory implements IFlowTask
     @Transactional(rollbackFor = Exception.class)
     @Override
     public AjaxResult complete(FlowTaskVo taskVo) {
+        System.out.println("======"+taskVo);
         Task task = taskService.createTaskQuery().taskId(taskVo.getTaskId()).singleResult();
         if (Objects.isNull(task)) {
             return AjaxResult.error("任务不存在");
@@ -102,10 +103,17 @@ public class FlowTaskServiceImpl extends FlowServiceFactory implements IFlowTask
         if (DelegationState.PENDING.equals(task.getDelegationState())) {
             taskService.addComment(taskVo.getTaskId(), taskVo.getInstanceId(), FlowComment.DELEGATE.getType(), taskVo.getComment());
             taskService.resolveTask(taskVo.getTaskId(), taskVo.getVariables());
+            if (taskVo.getType()!=null){
+                taskService.setVariable(taskVo.getTaskId().toString(),"auditTypeee" ,taskVo.getType());
+            }
         } else {
             taskService.addComment(taskVo.getTaskId(), taskVo.getInstanceId(), FlowComment.NORMAL.getType(), taskVo.getComment());
             Long userId = SecurityUtils.getLoginUser().getUser().getUserId();
+            if (taskVo.getType()!=null){
+                taskService.setVariable(taskVo.getTaskId().toString(),"auditTypeee" ,taskVo.getType());
+            }
             taskService.setAssignee(taskVo.getTaskId(), userId.toString());
+            System.out.println("执行这里没有？");
             taskService.complete(taskVo.getTaskId(), taskVo.getVariables());
         }
         return AjaxResult.success();

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rent.mapper.RentMapper">
+    <resultMap id="RentResultMap" type="Rent">
+        <result property="id" column="id"/>
+        <result property="payMethod" column="pay_method"/>
+        <result property="tenant" column="tenant"/>
+        <result property="tenantType" column="tenant_type"/>
+        <result property="periods" column="periods"/>
+        <result property="monthlyRent" column="monthly_rent"/>
+        <result property="deposit" column="deposit"/>
+        <result property="payDay" column="pay_day"/>
+        <result property="auditType" column="audit_type"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Rent">
+      insert into rent
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="id!=null  and id != ''">id,</if>
+          <if test="payMethod!=null and payMethod != ''">pay_method,</if>
+          <if test="tenant!=null and tenant != ''">tenant,</if>
+          <if test="tenantType!=null and tenantType != ''">tenant_type,</if>
+          <if test="periods!=null and periods != ''">periods,</if>
+          <if test="monthlyRent!=null and monthlyRent != ''">monthly_rent,</if>
+          <if test="deposit!=null and deposit != ''">deposit,</if>
+          <if test="payDay!=null and payDay != ''">pay_day,</if>
+          <if test="auditType!=null and auditType != ''">audit_type,</if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+          <if test="id!=null and id != ''">#{id},</if>
+          <if test="payMethod!=null and payMethod != ''">#{payMethod},</if>
+          <if test="tenant!=null and tenant != ''">#{tenant},</if>
+          <if test="tenantType!=null and tenantType != ''">#{tenantType},</if>
+          <if test="periods!=null and periods != ''">#{periods},</if>
+          <if test="monthlyRent!=null and monthlyRent != ''">#{monthlyRent},</if>
+          <if test="deposit!=null and deposit != ''">#{deposit},</if>
+          <if test="payDay!=null and payDay != ''">#{payDay},</if>
+          <if test="auditType!=null and auditType != ''">#{auditType},</if>
+      </trim>
+    </insert>
+
+    <update id="updatePropertyAuditType" >
+        update rent set audit_type = #{auditType} where id = #{id}
+    </update>
+</mapper>

@@ -69,6 +69,13 @@
 			<artifactId>mybatis-plus-boot-starter</artifactId>
 		</dependency>
 
+
+		<dependency>
+			<groupId>com.rent</groupId>
+			<artifactId>ruoyi-rent</artifactId>
+			<version>$ruoyi.version</version>
+		</dependency>
+
 		<dependency>
 			<!-- websocket -->
 			<groupId>org.springframework.boot</groupId>

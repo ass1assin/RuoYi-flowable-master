@@ -53,4 +53,7 @@ public class FlowTaskVo {
 
     @ApiModelProperty("审批组")
     private List<String> candidateGroups;
+
+    @ApiModelProperty("是否同意")
+    private Integer type;
 }

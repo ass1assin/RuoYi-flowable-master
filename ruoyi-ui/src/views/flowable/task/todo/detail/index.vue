@@ -87,6 +87,12 @@
             <flow-user v-if="checkSendUser" :checkType="checkType" @handleUserSelect="handleUserSelect"></flow-user>
             <flow-role v-if="checkSendRole" @handleRoleSelect="handleRoleSelect"></flow-role>
           </el-form-item>
+          <el-form-item label="审批结果" label-width="80px" prop="type">
+            <template>
+              <el-radio v-model="taskForm.type" label="1" @change="comment">同意审批</el-radio>
+              <el-radio v-model="taskForm.type" label="0" @change="comment">拒绝审批</el-radio>
+            </template>
+          </el-form-item>
           <el-form-item label="处理意见" label-width="80px" prop="comment"
                         :rules="[{ required: true, message: '请输入处理意见', trigger: 'blur' }]">
             <el-input type="textarea" v-model="taskForm.comment" placeholder="请输入处理意见"/>
@@ -245,6 +251,18 @@ export default {
     }
   },
   methods: {
+    comment(){
+      console.log(this.taskForm.type)
+      if(this.taskForm.type == 1){
+        this.taskForm.comment = '同意'
+      }
+      else if(this.taskForm.type == 0){
+        this.taskForm.comment = '拒绝'
+      }
+      else {
+        this.taskForm.comment = ''
+      }
+    },
     handleClick(tab, event) {
       if (tab.name === '3') {
         flowXmlAndNode({procInsId: this.taskForm.procInsId, deployId: this.taskForm.deployId}).then(res => {
@@ -357,11 +375,13 @@ export default {
         this.taskForm.formData.formData.formBtns = false;
         this.taskForm.variables = Object.assign({}, this.taskForm.variables, this.taskForm.formData.valData);
         this.taskForm.variables.variables = this.taskForm.formData.formData;
+        console.log("this.taskForm1"+JSON.stringify(this.taskForm))
         complete(this.taskForm).then(response => {
           this.$modal.msgSuccess(response.msg);
           this.goBack();
         });
       } else {
+        console.log("this.taskForm2"+JSON.stringify(this.taskForm))
         // 流程设计人员类型配置为固定人员接收任务时,直接提交任务到下一步
         complete(this.taskForm).then(response => {
           this.$modal.msgSuccess(response.msg);
